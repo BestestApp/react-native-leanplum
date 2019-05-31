@@ -25,14 +25,13 @@ RCT_EXPORT_MODULE(Leanplum);
 - (RNLeanplum *)init {
 
     self=[super init];
-#ifdef DEBUG
-    LEANPLUM_USE_ADVERTISING_ID;
-    [Leanplum setAppId:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"LeanplumAppId"]
-    withDevelopmentKey:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"LeanplumDevSecret"]];
-#else
-    [Leanplum setAppId:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"LeanplumAppId"]
-     withProductionKey:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"LeanplumProdSecret"]];
-#endif
+
+    #ifdef DEBUG
+        LEANPLUM_USE_ADVERTISING_ID;
+    #endif
+    
+    [Leanplum setAppId:branchDictionary[@"app_id"]
+     withProductionKey:branchDictionary[@"env_key"]];
 
     // Optional: Tracks in-app purchases automatically as the "Purchase" event.
     // To require valid receipts upon purchase or change your reported
