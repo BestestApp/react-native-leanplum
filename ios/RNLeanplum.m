@@ -29,9 +29,13 @@ RCT_EXPORT_MODULE(Leanplum);
     #ifdef DEBUG
         LEANPLUM_USE_ADVERTISING_ID;
     #endif
+
+    NSString * const LEANPLUM_KEY = @"leanplum_key";
+    NSDictionary *leanplumDictionary =
+        [[[NSBundle mainBundle] infoDictionary] objectForKey:LEANPLUM_KEY];
     
-    [Leanplum setAppId:branchDictionary[@"app_id"]
-     withProductionKey:branchDictionary[@"env_key"]];
+    [Leanplum setAppId:leanplumDictionary[@"app_id"]
+     withProductionKey:leanplumDictionary[@"env_key"]];
 
     // Optional: Tracks in-app purchases automatically as the "Purchase" event.
     // To require valid receipts upon purchase or change your reported
@@ -49,6 +53,8 @@ RCT_EXPORT_MODULE(Leanplum);
     // the build number (CFBundleVersion).
     [Leanplum setAppVersion:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     [Leanplum start];
+
+    /*
 id notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
   if (notificationCenterClass) {
     // iOS 10.
@@ -62,7 +68,7 @@ id notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
       void (*func)(id, SEL, unsigned long long, void (^)(BOOL, NSError *__nullable)) =
       (void *) method;
       func(notificationCenter, selector,
-           0b111, /* badges, sounds, alerts */
+           //0b111,  badges, sounds, alerts 
            ^(BOOL granted, NSError *__nullable error) {
              if (error) {
                NSLog(@"Leanplum: Failed to request authorization for user "
@@ -82,12 +88,13 @@ id notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
     [[UIApplication sharedApplication] registerForRemoteNotifications];
   } else {
     // iOS 7 and below.
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-#pragma clang diagnostic pop
+    #pragma clang diagnostic pop
      UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge];
   }
+  */
     // Starts a new session and updates the app content from Leanplum.
     return self;
 }
