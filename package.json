@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/gleephDamien/react-native-leanplum#readme",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "name": "@gleeph/react-native-leanplum",
   "peerDependencies": {
     "react-native": ">=0.40.0"
