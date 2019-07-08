@@ -52,7 +52,9 @@ RCT_EXPORT_MODULE(Leanplum);
     // Sets the app version, which otherwise defaults to
     // the build number (CFBundleVersion).
     [Leanplum setAppVersion:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-    [Leanplum start];
+     if(![Leanplum hasStarted]){
+        [Leanplum start];
+    }
 
     /*
 id notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
@@ -68,7 +70,7 @@ id notificationCenterClass = NSClassFromString(@"UNUserNotificationCenter");
       void (*func)(id, SEL, unsigned long long, void (^)(BOOL, NSError *__nullable)) =
       (void *) method;
       func(notificationCenter, selector,
-           //0b111,  badges, sounds, alerts 
+           0b111,  //badges, sounds, alerts 
            ^(BOOL granted, NSError *__nullable error) {
              if (error) {
                NSLog(@"Leanplum: Failed to request authorization for user "
