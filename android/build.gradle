@@ -38,6 +38,6 @@ android {
 
 dependencies {
     implementation "com.facebook.react:react-native:+"
-    implementation 'com.leanplum:leanplum-fcm:4.2.3'
+    implementation 'com.leanplum:leanplum-fcm:4.2.7'
     implementation "com.google.firebase:firebase-messaging:17.3.2"
 }
