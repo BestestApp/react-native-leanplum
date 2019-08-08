@@ -16,10 +16,11 @@ import android.app.NotificationChannel;
 
 public class RNLeanplumPackage implements ReactPackage {
     private Application application;
+    private Keys keys;
 
-    public RNLeanplumPackage(Application app) {
-        application = app;
-
+    public RNLeanplumPackage(Application app, Keys keys) {
+        this.application = app;
+        this.keys = keys;
     }
 
     @Override
@@ -45,11 +46,35 @@ public class RNLeanplumPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
         initialiseChannels(reactContext);
 
-        modules.add(new RNLeanplum(reactContext, application));
+        modules.add(new RNLeanplum(reactContext, application, keys));
         modules.add(new RNLPInbox(reactContext, application));
         modules.add(new RNLPInboxMessage(reactContext, application));
 
         return modules;
     }
 
+    public static class Keys {
+        private String appId;
+        private String devId;
+        private String prodId;
+
+        public Keys(String appId, String devId, String prodId){
+            this.appId = appId;
+            this.devId = devId;
+            this.prodId = prodId;
+        }
+
+        String getAppId() {
+            return appId;
+        }
+
+        String getDevId() {
+            return devId;
+        }
+
+        String getProdId() {
+            return prodId;
+        }
+    }
 }
+
