@@ -26,21 +26,25 @@ RCT_EXPORT_MODULE(Leanplum);
 
     self=[super init];
 
-    #ifdef DEBUG
-        LEANPLUM_USE_ADVERTISING_ID;
-    #endif
-
     NSString * const LEANPLUM_KEY = @"leanplum_key";
     NSDictionary *leanplumDictionary =
         [[[NSBundle mainBundle] infoDictionary] objectForKey:LEANPLUM_KEY];
     
-    [Leanplum setAppId:leanplumDictionary[@"app_id"]
-     withProductionKey:leanplumDictionary[@"env_key"]];
+    // Insert your API keys here.
+    #ifdef DEBUG
+        LEANPLUM_USE_ADVERTISING_ID;
+        [Leanplum setAppId:leanplumDictionary[@"app_id"]
+            withDevelopmentKey:@"dev_key"];
+    #else
+        [Leanplum setAppId:leanplumDictionary[@"app_id"]
+         withProductionKey:leanplumDictionary[@"prod_key"]];
+    #endif
+    
 
     // Optional: Tracks in-app purchases automatically as the "Purchase" event.
     // To require valid receipts upon purchase or change your reported
     // currency code from USD, update your app settings.
-    // [Leanplum trackInAppPurchases];
+    [Leanplum trackInAppPurchases];
 
     // Optional: Tracks all screens in your app as states in Leanplum.
     [Leanplum trackAllAppScreens];
