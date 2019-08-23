@@ -42,6 +42,7 @@ public class RNLeanplum extends ReactContextBaseJavaModule {
         }
         return null;
     }
+    
     public RNLeanplum(ReactApplicationContext reactContext) {
         super(reactContext);
         mContext=reactContext;

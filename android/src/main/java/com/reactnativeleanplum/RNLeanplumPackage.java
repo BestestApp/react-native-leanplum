@@ -37,12 +37,34 @@ public class RNLeanplumPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         initialiseChannels(reactContext);
-
         modules.add(new RNLeanplum(reactContext));
         modules.add(new RNLPInbox(reactContext));
         modules.add(new RNLPInboxMessage(reactContext));
-
         return modules;
     }
 
+    public static class Keys {
+        private String appId;
+        private String devId;
+        private String prodId;
+
+        public Keys(String appId, String devId, String prodId){
+            this.appId = appId;
+            this.devId = devId;
+            this.prodId = prodId;
+        }
+
+        String getAppId() {
+            return appId;
+        }
+
+        String getDevId() {
+            return devId;
+        }
+
+        String getProdId() {
+            return prodId;
+        }
+    }
 }
+
