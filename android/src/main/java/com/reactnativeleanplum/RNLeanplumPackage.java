@@ -1,7 +1,5 @@
 package com.reactnativeleanplum;
 
-import android.app.Application;
-
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -10,17 +8,12 @@ import com.facebook.react.uimanager.ViewManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import android.os.Build;
-import android.app.NotificationManager;
+
 import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 
 public class RNLeanplumPackage implements ReactPackage {
-    private Application application;
-
-    public RNLeanplumPackage(Application app) {
-        application = app;
-
-    }
 
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
@@ -45,9 +38,9 @@ public class RNLeanplumPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
         initialiseChannels(reactContext);
 
-        modules.add(new RNLeanplum(reactContext, application));
-        modules.add(new RNLPInbox(reactContext, application));
-        modules.add(new RNLPInboxMessage(reactContext, application));
+        modules.add(new RNLeanplum(reactContext));
+        modules.add(new RNLPInbox(reactContext));
+        modules.add(new RNLPInboxMessage(reactContext));
 
         return modules;
     }

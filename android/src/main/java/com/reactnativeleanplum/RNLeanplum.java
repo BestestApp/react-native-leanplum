@@ -1,6 +1,5 @@
 package com.reactnativeleanplum;
 
-import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import java.util.logging.Logger;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
@@ -19,16 +17,10 @@ import com.facebook.react.bridge.ReadableType;
 import com.leanplum.callbacks.StartCallback;
 import com.leanplum.callbacks.VariablesChangedCallback;
 import com.leanplum.Leanplum;
-import com.leanplum.LeanplumActivityHelper;
 
 import java.util.HashMap;
 
 public class RNLeanplum extends ReactContextBaseJavaModule {
-    private Application application;
-    private String application_id;
-    private String dev_key;
-    private String prod_key;
-    private String enableDebug;
     private ReactApplicationContext mContext;
     private String getMetaData(String name) {
         try {
@@ -50,31 +42,9 @@ public class RNLeanplum extends ReactContextBaseJavaModule {
         }
         return null;
     }
-    public RNLeanplum(ReactApplicationContext reactContext, Application app) {
+    public RNLeanplum(ReactApplicationContext reactContext) {
         super(reactContext);
         mContext=reactContext;
-        Leanplum.setApplicationContext(app);
-        LeanplumActivityHelper.enableLifecycleCallbacks(app);
-        application = app;
-        application_id = getMetaData("com.reactnativeleanplum.APP_ID");
-        dev_key = getMetaData("com.reactnativeleanplum.DEV_KEY");
-        prod_key = getMetaData("com.reactnativeleanplum.PROD_KEY");
-
-        if (BuildConfig.DEBUG) {
-            Logger.getLogger("ReactNative").info("Leanplum launched in debug mode");
-            enableDebug = getMetaData("com.reactnativeleanplum.SHOW_NOTIF_IN_DEBUG");
-            Leanplum.setAppIdForDevelopmentMode(application_id, dev_key);
-            Leanplum.enableVerboseLoggingInDevelopmentMode();
-            if(enableDebug=="false"){
-                Logger.getLogger("ReactNative").info("disabling notifications from Leanplum");
-                Leanplum.enableTestMode();
-            }
-        } else {
-            Logger.getLogger("ReactNative").info("Leanplum launched in release mode");
-            Leanplum.setAppIdForProductionMode(application_id, prod_key);
-        }
-        Leanplum.trackAllAppScreens();
-        Leanplum.start(app);
     }
 
     @Override
@@ -120,7 +90,7 @@ public class RNLeanplum extends ReactContextBaseJavaModule {
     
     @ReactMethod
     public void start(String userId, ReadableMap attributes, final Promise promise) {
-        Leanplum.start(application, userId, attributes != null ? attributes.toHashMap() : null, new StartCallback() {
+        Leanplum.start(getReactApplicationContext(), userId, attributes != null ? attributes.toHashMap() : null, new StartCallback() {
             @Override
             public void onResponse(boolean success) {
                 promise.resolve(success);
