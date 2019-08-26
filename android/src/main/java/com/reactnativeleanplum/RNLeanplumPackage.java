@@ -20,15 +20,18 @@ public class RNLeanplumPackage implements ReactPackage {
         return Collections.emptyList();
     }
 
-    private void initialiseChannels(ReactApplicationContext c){
+    private void createNotificationChannel(ReactApplicationContext context) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "default";
-            String description = "default channel to send message";
-            String CHANNEL_ID="0";
+            CharSequence name = "all-users";
+            String description = "description";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            NotificationChannel channel = new NotificationChannel("all-users", name, importance);
             channel.setDescription(description);
-            NotificationManager notificationManager = c.getSystemService(NotificationManager.class);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }
@@ -36,35 +39,11 @@ public class RNLeanplumPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        initialiseChannels(reactContext);
+        createNotificationChannel(reactContext);
         modules.add(new RNLeanplum(reactContext));
         modules.add(new RNLPInbox(reactContext));
         modules.add(new RNLPInboxMessage(reactContext));
         return modules;
-    }
-
-    public static class Keys {
-        private String appId;
-        private String devId;
-        private String prodId;
-
-        public Keys(String appId, String devId, String prodId){
-            this.appId = appId;
-            this.devId = devId;
-            this.prodId = prodId;
-        }
-
-        String getAppId() {
-            return appId;
-        }
-
-        String getDevId() {
-            return devId;
-        }
-
-        String getProdId() {
-            return prodId;
-        }
     }
 }
 

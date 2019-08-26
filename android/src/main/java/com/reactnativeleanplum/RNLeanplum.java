@@ -1,10 +1,5 @@
 package com.reactnativeleanplum;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import java.util.logging.Logger;
-
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -21,31 +16,9 @@ import com.leanplum.Leanplum;
 import java.util.HashMap;
 
 public class RNLeanplum extends ReactContextBaseJavaModule {
-    private ReactApplicationContext mContext;
-    private String getMetaData(String name) {
-        try {
-            ApplicationInfo ai = mContext.getPackageManager().getApplicationInfo(
-                    mContext.getPackageName(),
-                    PackageManager.GET_META_DATA
-            );
-
-            Bundle metaData = ai.metaData;
-            if (metaData == null) {
-                Logger.getLogger("ReactNative").warning("metaData is null. Unable to get meta data for " + name);
-            } else {
-                String value = metaData.getString(name);
-                return value;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Logger.getLogger("ReactNative").severe(e.getMessage());
-            e.printStackTrace();
-        }
-        return null;
-    }
     
     public RNLeanplum(ReactApplicationContext reactContext) {
         super(reactContext);
-        mContext=reactContext;
     }
 
     @Override
